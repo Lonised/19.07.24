@@ -1,9 +1,18 @@
 <template>
-    <div>
-      <h2>Income and Expenses Management</h2>
-  
+<div class="container">
 
-      <div>
+  <div class="wrapper-header">
+    <div class="header">
+      <h2>Income and Expenses Management</h2>
+    </div>
+  </div>
+
+  <div class="wrapper-main">
+
+    <div class="main">
+
+      <div class="income">
+
         <h3>Add Income</h3>
         <form @submit.prevent="addIncome">
           <label>Date:</label>
@@ -14,10 +23,11 @@
           <input type="text" v-model="newIncome.source" required>
           <button type="submit">Add Income</button>
         </form>
-      </div>
-  
 
-      <div>
+      </div>
+
+      <div class="expense">
+
         <h3>Add Expense</h3>
         <form @submit.prevent="addExpense">
           <label>Date:</label>
@@ -33,8 +43,12 @@
           </select>
           <button type="submit">Add Expense</button>
         </form>
+
       </div>
-  
+
+    </div>
+
+    <div class="postmain">
 
       <div>
         <h3>Incomes</h3>
@@ -45,7 +59,6 @@
           </li>
         </ul>
       </div>
-  
 
       <div>
         <h3>Expenses</h3>
@@ -57,7 +70,9 @@
         </ul>
       </div>
     </div>
-  </template>
+  </div>
+</div>
+</template>
   
   <script>
   export default {
@@ -113,31 +128,65 @@
   </script>
   
   <style scoped>
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+  @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&display=swap');
+
+  .body {
+    background-color: rgb(148, 148, 148);
   }
-  
-  form {
-    margin-bottom: 1rem;
+
+  *{
+    font-family: "Hepta Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
   }
-  
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
+
+  .container {
+    background-color: rgb(148, 148, 148);
+    width: 100%;
+    height: 944px;
   }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
+
+  .wrapper-header {
+    width: 100%;
+    height: 100px;
+
+    display: flex;
   }
-  
-  li {
-    margin-bottom: 0.5rem;
+
+  .header {
+    width: 100%;
+    height: 100px;
+    background-color: rgb(71, 71, 71);
+    color: rgb(148, 148, 148);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  
-  button {
-    margin-left: 1rem;
+
+  .wrapper-main {
+
+    color: rgb(71, 71, 71);
   }
-  </style>
+
+  .main {
+    display: flex;
+    gap: 50px;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
   

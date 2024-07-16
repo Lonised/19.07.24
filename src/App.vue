@@ -24,10 +24,6 @@ body {
 }
 
 #app {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
 }
 
 
@@ -41,10 +37,7 @@ body {
 }
 
 
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
+
 
 h3 {
   font-size: 1.2rem;
