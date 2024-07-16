@@ -2,7 +2,7 @@
     <div>
       <h2>Income and Expenses Management</h2>
   
-      <!-- Form to add income -->
+
       <div>
         <h3>Add Income</h3>
         <form @submit.prevent="addIncome">
@@ -16,7 +16,7 @@
         </form>
       </div>
   
-      <!-- Form to add expense -->
+
       <div>
         <h3>Add Expense</h3>
         <form @submit.prevent="addExpense">
@@ -35,7 +35,7 @@
         </form>
       </div>
   
-      <!-- Display incomes -->
+
       <div>
         <h3>Incomes</h3>
         <ul>
@@ -46,7 +46,7 @@
         </ul>
       </div>
   
-      <!-- Display expenses -->
+
       <div>
         <h3>Expenses</h3>
         <ul>
@@ -64,10 +64,10 @@
     data() {
       return {
         incomes: [
-          // Initial incomes if needed
+ 
         ],
         expenses: [
-          // Initial expenses if needed
+
         ],
         newIncome: {
           date: '',
@@ -113,7 +113,6 @@
   </script>
   
   <style scoped>
-  /* Scoped styles for this component */
   h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
