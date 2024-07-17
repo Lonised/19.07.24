@@ -1,190 +1,369 @@
 <template>
-<div class="container">
-
   <div class="wrapper-header">
     <div class="header">
-      <h2>Income and Expenses Management</h2>
+      <h2>Статистика о доходах и расходах</h2>
     </div>
   </div>
 
   <div class="wrapper-main">
-
     <div class="main">
-
       <div class="income">
-
-        <h3>Add Income</h3>
+        <h3>Доходы</h3>
+        <div class="line"></div>
         <form @submit.prevent="addIncome">
-          <label>Date:</label>
+          <label>Дата:</label>
           <input type="date" v-model="newIncome.date" required>
-          <label>Amount:</label>
+          <label>Сумма:</label>
           <input type="number" v-model="newIncome.amount" required>
-          <label>Source:</label>
+          <label>От кого:</label>
           <input type="text" v-model="newIncome.source" required>
-          <button type="submit">Add Income</button>
+          <button class="addbtn" type="submit">Добавить</button>
         </form>
-
       </div>
 
       <div class="expense">
-
-        <h3>Add Expense</h3>
+        <h3>Расходы</h3>
+        <div class="line"></div>
         <form @submit.prevent="addExpense">
-          <label>Date:</label>
+          <label>Дата:</label>
           <input type="date" v-model="newExpense.date" required>
-          <label>Amount:</label>
+          <label>Сумма:</label>
           <input type="number" v-model="newExpense.amount" required>
-          <label>Category:</label>
+          <label>Категория:</label>
           <select v-model="newExpense.category" required>
-            <option value="Food">Food</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Transport">Transport</option>
-            <option value="Other">Other</option>
+            <option value="Food">Еда</option>
+            <option value="Clothing">Одежда</option>
+            <option value="Transport">Транспорт</option>
+            <option value="Other">Развлечения</option>
+            <option value="Electronics">Электроника</option>
+            <option value="Utilities">Коммунальные</option>
+            <option value="Healthcare">Медицина</option>
+            <option value="Education">Образование</option>
+            <option value="Books">Книги</option>
+            <option value="Hobbies">Хобби</option>
+            <option value="Gifts">Подарки</option>
+            <option value="Furniture">Мебель</option>
+            <option value="Repairs">Ремонт</option>
+            <option value="Sports">Спорт</option>
+            <option value="Travel">Туризм</option>
+            <option value="Insurance">Страховка</option>
+            <option value="Internet">Интернет</option>
+            <option value="Phone">Телефон</option>
+            <option value="Shoes">Обувь</option>
+            <option value="Cosmetics">Косметика</option>
+            <option value="Groceries">Продукты</option>
+            <option value="Taxi">Такси</option>
+            <option value="Services">Сервисы</option>
+            <option value="Charity">Благотворительность</option>
           </select>
-          <button type="submit">Add Expense</button>
+          <button class="addbtn" type="submit">Добавить</button>
         </form>
-
       </div>
-
     </div>
 
     <div class="postmain">
-
-      <div>
-        <h3>Incomes</h3>
+      <div class="postmain-income">
+        <h3>Доходы</h3>
+        <div class="postmain-line"></div>
         <ul>
           <li v-for="(income, index) in incomes" :key="index">
             {{ income.date }} - ${{ income.amount }} from {{ income.source }}
-            <button @click="removeIncome(index)">Remove</button>
+            <button @click="removeIncome(index)">Очистить</button>
           </li>
         </ul>
       </div>
 
-      <div>
-        <h3>Expenses</h3>
+      <div class="postmain-expenses">
+        <h3>Расходы</h3>
+        <div class="postmain-line"></div>
         <ul>
           <li v-for="(expense, index) in expenses" :key="index">
             {{ expense.date }} - ${{ expense.amount }} on {{ expense.category }}
-            <button @click="removeExpense(index)">Remove</button>
+            <button @click="removeExpense(index)">Очистить</button>
           </li>
         </ul>
       </div>
     </div>
   </div>
-</div>
 </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        incomes: [
- 
-        ],
-        expenses: [
 
-        ],
-        newIncome: {
-          date: '',
-          amount: '',
-          source: ''
-        },
-        newExpense: {
-          date: '',
-          amount: '',
-          category: ''
-        }
-      };
+<script>
+export default {
+  data() {
+    return {
+      incomes: [],
+      expenses: [],
+      newIncome: {
+        date: '',
+        amount: '',
+        source: ''
+      },
+      newExpense: {
+        date: '',
+        amount: '',
+        category: ''
+      }
+    };
+  },
+  created() {
+    this.loadIncomes();
+    this.loadExpenses();
+  },
+  methods: {
+    addIncome() {
+      const incomeDate = this.newIncome.date || new Date().toISOString().slice(0, 10);
+      this.incomes.push({
+        date: incomeDate,
+        amount: parseFloat(this.newIncome.amount),
+        source: this.newIncome.source
+      });
+      this.newIncome.date = '';
+      this.newIncome.amount = '';
+      this.newIncome.source = '';
+      this.saveIncomes();
     },
-    methods: {
-      addIncome() {
-        this.incomes.push({
-          date: this.newIncome.date,
-          amount: parseFloat(this.newIncome.amount),
-          source: this.newIncome.source
-        });
-        this.newIncome.date = '';
-        this.newIncome.amount = '';
-        this.newIncome.source = '';
-      },
-      addExpense() {
-        this.expenses.push({
-          date: this.newExpense.date,
-          amount: parseFloat(this.newExpense.amount),
-          category: this.newExpense.category
-        });
-        this.newExpense.date = '';
-        this.newExpense.amount = '';
-        this.newExpense.category = '';
-      },
-      removeIncome(index) {
-        this.incomes.splice(index, 1);
-      },
-      removeExpense(index) {
-        this.expenses.splice(index, 1);
+    addExpense() {
+      const expenseDate = this.newExpense.date || new Date().toISOString().slice(0, 10);
+      this.expenses.push({
+        date: expenseDate,
+        amount: parseFloat(this.newExpense.amount),
+        category: this.newExpense.category
+      });
+      this.newExpense.date = '';
+      this.newExpense.amount = '';
+      this.newExpense.category = '';
+      this.saveExpenses();
+    },
+    removeIncome(index) {
+      this.incomes.splice(index, 1);
+      this.saveIncomes();
+    },
+    removeExpense(index) {
+      this.expenses.splice(index, 1);
+      this.saveExpenses();
+    },
+    saveIncomes() {
+      localStorage.setItem('incomes', JSON.stringify(this.incomes));
+    },
+    saveExpenses() {
+      localStorage.setItem('expenses', JSON.stringify(this.expenses));
+    },
+    loadIncomes() {
+      const savedIncomes = localStorage.getItem('incomes');
+      if (savedIncomes) {
+        this.incomes = JSON.parse(savedIncomes);
+      }
+    },
+    loadExpenses() {
+      const savedExpenses = localStorage.getItem('expenses');
+      if (savedExpenses) {
+        this.expenses = JSON.parse(savedExpenses);
       }
     }
-  };
-  </script>
+  }
+};
+</script>
   
-  <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&display=swap');
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
-  .body {
-    background-color: rgb(148, 148, 148);
-  }
-
-  *{
-    font-family: "Hepta Slab", serif;
-    font-optical-sizing: auto;
-    font-weight: weight;
-    font-style: normal;
-  }
-
-  .container {
-    background-color: rgb(148, 148, 148);
-    width: 100%;
-    height: 944px;
-  }
-
-  .wrapper-header {
-    width: 100%;
-    height: 100px;
-
-    display: flex;
-  }
-
-  .header {
-    width: 100%;
-    height: 100px;
-    background-color: rgb(71, 71, 71);
-    color: rgb(148, 148, 148);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .wrapper-main {
-
-    color: rgb(71, 71, 71);
-  }
-
-  .main {
-    display: flex;
-    gap: 50px;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 
 
+  font-family: "Merriweather", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.hidden {
+  display: none;
+}
+
+.wrapper-header {
+  width: 100%;
+  height: 75px;
+  box-shadow: 4px 13px 19px 4px rgba(34, 60, 80, 0.2);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+.header h2 {
+  font-size: 20px;
+}
+
+.wrapper-main {
+  width: 100%;
+  height: 500px;
+
+  display: flex;
+  justify-content: space-between;
+  
+  padding: 20px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.line {
+  width: 300px;
+  height: 2px;
+  background-color: black;
+}
+
+.income {
+  width: 300px;
+  height: 400px;
+  border: 2px solid black;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.income h3 {
+  padding: 10px;
+}
+
+.income form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.income input {
+  width: 200px;
+  border: 1px solid black;
+  border-left: 0;
+  border-top: 0;
+  border-right: 0;
+}
+
+.addbtn {
+  width: 100px;
+  height: 30px;
+  background-color: #8a8a8a;
+}
+
+.addbtn:hover {
+  background-color: #666666;
+}
+
+.addbtn:active {
+  background-color: #666666;
+}
 
 
 
 
 
 
+.expense {
+  width: 300px;
+  height: 400px;
+  border: 2px solid black;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.expense h3 {
+  padding: 10px;
+}
+
+.expense form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.expense input {
+  width: 200px;
+  border: 1px solid black;
+  border-left: 0;
+  border-top: 0;
+  border-right: 0;
+}
+
+.expense select {
+  width: 200px;
+}
+
+.addbtn {
+  width: 100px;
+  height: 30px;
+  background-color: #8a8a8a;
+}
+
+.addbtn:hover {
+  background-color: #666666;
+}
+
+.addbtn:active {
+  background-color: #666666;
+}
 
 
+.postmain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 50px;
+}
 
+.postmain-line {
+  width: 100%;
+  height: 2px;
+  background-color: black;
+}
+
+.postmain-income {
+  width: 500px;
+  height: 300px;
+  border: 2px solid black;
+}
+
+.postmain-income h3 {
+  padding: 20px;
+}
+
+.postmain-income li {
+  width: 100%;
+  height: 30%;
+}
+
+.postmain-expenses {
+  width: 500px;
+  height: 300px;
+  border: 2px solid black;
+}
+
+.postmain-expenses h3 {
+  padding: 20px;
+}
+
+.postmain-expenses li {
+  width: 100%;
+  height: 30%;
+}
 
 
 
