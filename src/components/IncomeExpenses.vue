@@ -67,7 +67,7 @@
         <div class="postmain-line"></div>
         <ul>
           <li v-for="(income, index) in incomes" :key="index">
-            {{ income.date }} - ${{ income.amount }} from {{ income.source }}
+            {{ income.date }} - ₸{{ income.amount }} from {{ income.source }}
             <button @click="removeIncome(index)">Очистить</button>
           </li>
         </ul>
@@ -78,7 +78,7 @@
         <div class="postmain-line"></div>
         <ul>
           <li v-for="(expense, index) in expenses" :key="index">
-            {{ expense.date }} - ${{ expense.amount }} on {{ expense.category }}
+            {{ expense.date }} - ₸{{ expense.amount }} on {{ expense.category }}
             <button @click="removeExpense(index)">Очистить</button>
           </li>
         </ul>
@@ -220,7 +220,7 @@ export default {
 
 .income {
   width: 300px;
-  height: 400px;
+  height: 300px;
   border: 2px solid black;
 
   padding: 20px;
@@ -249,6 +249,7 @@ export default {
   border-left: 0;
   border-top: 0;
   border-right: 0;
+  text-align: center;
 }
 
 .addbtn {
@@ -272,7 +273,7 @@ export default {
 
 .expense {
   width: 300px;
-  height: 400px;
+  height: 300px;
   border: 2px solid black;
 
   padding: 20px;
@@ -301,6 +302,7 @@ export default {
   border-left: 0;
   border-top: 0;
   border-right: 0;
+  text-align: center;
 }
 
 .expense select {
@@ -323,9 +325,9 @@ export default {
 
 
 .postmain {
+  height: 800px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 50px;
 }
 
@@ -348,7 +350,22 @@ export default {
 .postmain-income li {
   width: 100%;
   height: 30%;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
 }
+
+.postmain-income button {
+  background-color: #8a8a8a;
+  width: 100px;
+}
+
+.postmain-income button:hover {
+  background-color: #666666;
+}
+
+
 
 .postmain-expenses {
   width: 500px;
@@ -363,7 +380,24 @@ export default {
 .postmain-expenses li {
   width: 100%;
   height: 30%;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
 }
+
+.postmain-expenses button {
+  background-color: #8a8a8a;
+  width: 100px;
+}
+
+.postmain-expenses button:hover {
+  background-color: #666666;
+}
+
+
+
+
 
 
 
