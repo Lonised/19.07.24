@@ -1,101 +1,106 @@
 <template>
-  <div class="wrapper-header">
-    <div class="header">
-      <h2>Статистика о доходах и расходах</h2>
+<div class="wrapper-header">
+  <div class="header">
+    <h2>Статистика о доходах и расходах</h2>
+  </div>
+</div>
+
+<div class="wrapper-main">
+  <div class="main">
+    <div class="income">
+      <h3>Доходы</h3>
+      <div class="line"></div>
+      <form @submit.prevent="addIncome">
+        <label>Дата:</label>
+        <input type="date" v-model="newIncome.date" required>
+        <label>Сумма:</label>
+        <input type="number" v-model="newIncome.amount" required>
+        <label>От кого:</label>
+        <input type="text" v-model="newIncome.source" required>
+        <button class="addbtn" type="submit">Добавить</button>
+      </form>
+    </div>
+
+    <div class="expense">
+      <h3>Расходы</h3>
+      <div class="line"></div>
+      <form @submit.prevent="addExpense">
+        <label>Дата:</label>
+        <input type="date" v-model="newExpense.date" required>
+        <label>Сумма:</label>
+        <input type="number" v-model="newExpense.amount" required>
+        <label>Категория:</label>
+        <select v-model="newExpense.category" required>
+          <option>Еда</option>
+          <option>Одежда</option>
+          <option>Транспорт</option>
+          <option>Развлечения</option>
+          <option>Электроника</option>
+          <option>Коммунальные</option>
+          <option>Медицина</option>
+          <option>Образование</option>
+          <option>Книги</option>
+          <option>Хобби</option>
+          <option>Подарки</option>
+          <option>Мебель</option>
+          <option>Ремонт</option>
+          <option>Спорт</option>
+          <option>Туризм</option>
+          <option>Страховка</option>
+          <option>Интернет</option>
+          <option>Телефон</option>
+          <option>Обувь</option>
+          <option>Косметика</option>
+          <option>Продукты</option>
+          <option>Такси</option>
+          <option>Сервисы</option>
+          <option>Благотворительность</option>
+        </select>
+        <button class="addbtn" type="submit">Добавить</button>
+      </form>
     </div>
   </div>
 
-  <div class="wrapper-main">
-    <div class="main">
-      <div class="income">
-        <h3>Доходы</h3>
-        <div class="line"></div>
-        <form @submit.prevent="addIncome">
-          <label>Дата:</label>
-          <input type="date" v-model="newIncome.date" required>
-          <label>Сумма:</label>
-          <input type="number" v-model="newIncome.amount" required>
-          <label>От кого:</label>
-          <input type="text" v-model="newIncome.source" required>
-          <button class="addbtn" type="submit">Добавить</button>
-        </form>
-      </div>
-
-      <div class="expense">
-        <h3>Расходы</h3>
-        <div class="line"></div>
-        <form @submit.prevent="addExpense">
-          <label>Дата:</label>
-          <input type="date" v-model="newExpense.date" required>
-          <label>Сумма:</label>
-          <input type="number" v-model="newExpense.amount" required>
-          <label>Категория:</label>
-          <select v-model="newExpense.category" required>
-            <option value="Food">Еда</option>
-            <option value="Clothing">Одежда</option>
-            <option value="Transport">Транспорт</option>
-            <option value="Other">Развлечения</option>
-            <option value="Electronics">Электроника</option>
-            <option value="Utilities">Коммунальные</option>
-            <option value="Healthcare">Медицина</option>
-            <option value="Education">Образование</option>
-            <option value="Books">Книги</option>
-            <option value="Hobbies">Хобби</option>
-            <option value="Gifts">Подарки</option>
-            <option value="Furniture">Мебель</option>
-            <option value="Repairs">Ремонт</option>
-            <option value="Sports">Спорт</option>
-            <option value="Travel">Туризм</option>
-            <option value="Insurance">Страховка</option>
-            <option value="Internet">Интернет</option>
-            <option value="Phone">Телефон</option>
-            <option value="Shoes">Обувь</option>
-            <option value="Cosmetics">Косметика</option>
-            <option value="Groceries">Продукты</option>
-            <option value="Taxi">Такси</option>
-            <option value="Services">Сервисы</option>
-            <option value="Charity">Благотворительность</option>
-          </select>
-          <button class="addbtn" type="submit">Добавить</button>
-        </form>
-      </div>
+  <div class="postmain">
+    <div class="postmain-income">
+      <h3>Доходы</h3>
+      <div class="postmain-line"></div>
+      <ul>
+        <li v-for="(income, index) in incomes" :key="index">
+          {{ income.date }} - ₸{{ income.amount }} from {{ income.source }}
+          <button @click="removeIncome(index)">Очистить</button>
+        </li>
+      </ul>
     </div>
 
-    <div class="postmain">
-      <div class="postmain-income">
-        <h3>Доходы</h3>
-        <div class="postmain-line"></div>
-        <ul>
-          <li v-for="(income, index) in incomes" :key="index">
-            {{ income.date }} - ₸{{ income.amount }} from {{ income.source }}
-            <button @click="removeIncome(index)">Очистить</button>
-          </li>
-        </ul>
-      </div>
-
-      <div class="postmain-expenses">
-        <h3>Расходы</h3>
-        <div class="postmain-line"></div>
-        <ul>
-          <li v-for="(expense, index) in expenses" :key="index">
-            {{ expense.date }} - ₸{{ expense.amount }} on {{ expense.category }}
-            <button @click="removeExpense(index)">Очистить</button>
-          </li>
-        </ul>
-      </div>
+    <div class="postmain-expenses">
+      <h3>Расходы</h3>
+      <div class="postmain-line"></div>
+      <ul>
+        <li v-for="(expense, index) in expenses" :key="index">
+          {{ expense.date }} - ₸{{ expense.amount }} on {{ expense.category }}
+          <button @click="removeExpense(index)">Очистить</button>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div>
-    <IncomeChart :chartData="incomeChartData" :options="chartOptions"></IncomeChart>
-    <ExpenseChart :chartData="expenseChartData" :options="chartOptions"></ExpenseChart>
+  <div class="wrapper-pie">
+    <div class="pieIncome">
+      <IncomeChart :chartData="incomeChartData" :options="chartOptions"></IncomeChart>
+    </div>
+    <div class="pieExpense">
+      <ExpenseChart :chartData="expenseChartData" :options="chartOptions"></ExpenseChart>
+    </div>
   </div>
+</div>
+
+
 </template>
 
 <script>
 import IncomeChart from './IncomeChart.vue';
 import ExpenseChart from './ExpenseChart.vue';
-
 
 export default {
   components: {
@@ -183,22 +188,22 @@ export default {
       }
     },
     updateChartData() {
-      const incomeDates = this.incomes.map(income => income.date);
-      const expenseDates = this.expenses.map(expense => expense.date);
-      const allDates = [...new Set([...incomeDates, ...expenseDates])];
-
-      const incomeAmounts = allDates.map(date => {
-        const income = this.incomes.find(income => income.date === date);
-        return income ? income.amount : 0;
+      const incomeSources = [...new Set(this.incomes.map(income => income.source))];
+      const incomeAmounts = incomeSources.map(source => {
+        return this.incomes
+          .filter(income => income.source === source)
+          .reduce((sum, income) => sum + income.amount, 0);
       });
 
-      const expenseAmounts = allDates.map(date => {
-        const expense = this.expenses.find(expense => expense.date === date);
-        return expense ? expense.amount : 0;
+      const expenseCategories = [...new Set(this.expenses.map(expense => expense.category))];
+      const expenseAmounts = expenseCategories.map(category => {
+        return this.expenses
+          .filter(expense => expense.category === category)
+          .reduce((sum, expense) => sum + expense.amount, 0);
       });
 
       this.incomeChartData = {
-        labels: allDates,
+        labels: incomeSources,
         datasets: [
           {
             label: 'Доходы',
@@ -209,7 +214,7 @@ export default {
       };
 
       this.expenseChartData = {
-        labels: allDates,
+        labels: expenseCategories,
         datasets: [
           {
             label: 'Расходы',
@@ -222,6 +227,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Add your styles here */
+</style>
+
 
 
 
@@ -244,10 +254,13 @@ export default {
   display: none;
 }
 
+
 .wrapper-header {
   width: 100%;
   height: 75px;
   box-shadow: 4px 13px 19px 4px rgba(34, 60, 80, 0.2);
+
+  border-bottom: 2px solid black;
 
   display: flex;
   justify-content: space-between;
@@ -263,16 +276,16 @@ export default {
   height: 500px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   
   padding: 20px;
-  margin-bottom: 200px;
+  gap: 20px;
 }
 
 .main {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 20px;
 }
 
 .line {
@@ -391,7 +404,7 @@ export default {
   height: 800px;
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 20px;
 }
 
 .postmain-line {
@@ -458,6 +471,32 @@ export default {
   background-color: #666666;
 }
 
+
+.wrapper-pie {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pieIncome {
+  width: 400px;
+  height: 300px;
+  border: 2px solid black;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pieExpense {
+  width: 400px;
+  height: 300px;
+  border: 2px solid black;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 </style>
