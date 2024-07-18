@@ -32,7 +32,7 @@ export default defineComponent({
       nextTick(() => {
         if (chartCanvas.value) {
           chartInstance = new Chart(chartCanvas.value, {
-            type: 'pie',  // Change to 'pie'
+            type: 'pie', // Change to 'pie'
             data: props.chartData,
             options: props.options,
           });

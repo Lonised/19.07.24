@@ -20,7 +20,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #ffffff; 
+  background-color: #34373C; 
 }
 
 
