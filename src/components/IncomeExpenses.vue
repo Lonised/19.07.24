@@ -85,10 +85,23 @@
       </div>
     </div>
   </div>
+
+  <div>
+    <IncomeChart :chartData="incomeChartData" :options="chartOptions"></IncomeChart>
+    <ExpenseChart :chartData="expenseChartData" :options="chartOptions"></ExpenseChart>
+  </div>
 </template>
 
 <script>
+import IncomeChart from './IncomeChart.vue';
+import ExpenseChart from './ExpenseChart.vue';
+
+
 export default {
+  components: {
+    IncomeChart,
+    ExpenseChart,
+  },
   data() {
     return {
       incomes: [],
@@ -96,18 +109,23 @@ export default {
       newIncome: {
         date: '',
         amount: '',
-        source: ''
+        source: '',
       },
       newExpense: {
         date: '',
         amount: '',
-        category: ''
-      }
+        category: '',
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     };
   },
   created() {
     this.loadIncomes();
     this.loadExpenses();
+    this.updateChartData();
   },
   methods: {
     addIncome() {
@@ -115,32 +133,36 @@ export default {
       this.incomes.push({
         date: incomeDate,
         amount: parseFloat(this.newIncome.amount),
-        source: this.newIncome.source
+        source: this.newIncome.source,
       });
       this.newIncome.date = '';
       this.newIncome.amount = '';
       this.newIncome.source = '';
       this.saveIncomes();
+      this.updateChartData();
     },
     addExpense() {
       const expenseDate = this.newExpense.date || new Date().toISOString().slice(0, 10);
       this.expenses.push({
         date: expenseDate,
         amount: parseFloat(this.newExpense.amount),
-        category: this.newExpense.category
+        category: this.newExpense.category,
       });
       this.newExpense.date = '';
       this.newExpense.amount = '';
       this.newExpense.category = '';
       this.saveExpenses();
+      this.updateChartData();
     },
     removeIncome(index) {
       this.incomes.splice(index, 1);
       this.saveIncomes();
+      this.updateChartData();
     },
     removeExpense(index) {
       this.expenses.splice(index, 1);
       this.saveExpenses();
+      this.updateChartData();
     },
     saveIncomes() {
       localStorage.setItem('incomes', JSON.stringify(this.incomes));
@@ -159,10 +181,50 @@ export default {
       if (savedExpenses) {
         this.expenses = JSON.parse(savedExpenses);
       }
-    }
-  }
+    },
+    updateChartData() {
+      const incomeDates = this.incomes.map(income => income.date);
+      const expenseDates = this.expenses.map(expense => expense.date);
+      const allDates = [...new Set([...incomeDates, ...expenseDates])];
+
+      const incomeAmounts = allDates.map(date => {
+        const income = this.incomes.find(income => income.date === date);
+        return income ? income.amount : 0;
+      });
+
+      const expenseAmounts = allDates.map(date => {
+        const expense = this.expenses.find(expense => expense.date === date);
+        return expense ? expense.amount : 0;
+      });
+
+      this.incomeChartData = {
+        labels: allDates,
+        datasets: [
+          {
+            label: 'Доходы',
+            backgroundColor: '#42A5F5',
+            data: incomeAmounts,
+          },
+        ],
+      };
+
+      this.expenseChartData = {
+        labels: allDates,
+        datasets: [
+          {
+            label: 'Расходы',
+            backgroundColor: '#FF6384',
+            data: expenseAmounts,
+          },
+        ],
+      };
+    },
+  },
 };
 </script>
+
+
+
   
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
@@ -204,6 +266,7 @@ export default {
   justify-content: space-between;
   
   padding: 20px;
+  margin-bottom: 200px;
 }
 
 .main {
@@ -394,10 +457,6 @@ export default {
 .postmain-expenses button:hover {
   background-color: #666666;
 }
-
-
-
-
 
 
 

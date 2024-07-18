@@ -23,9 +23,6 @@ body {
   background-color: #ffffff; 
 }
 
-#app {
-}
-
 
 .IncomeExpenses {
   max-width: 800px; 
