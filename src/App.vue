@@ -21,6 +21,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #34373C; 
+  background-image: url(./img/2.jpg);
 }
 
 
