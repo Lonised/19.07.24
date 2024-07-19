@@ -110,6 +110,13 @@
           <ExpenseChart :chartData="expenseChartData" :options="chartOptions"></ExpenseChart>
         </div>
       </div>
+
+      <div class="balance">
+        <h3>Баланс</h3>
+        <p>Общий доход: ₸{{ totalIncome }}</p>
+        <p>Общий расход: ₸{{ totalExpense }}</p>
+        <p>Баланс: ₸{{ balance }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -175,6 +182,15 @@ export default {
       if (this.expenses.length === 0) return { amount: 0, category: '-' };
       return this.expenses.reduce((max, expense) => (expense.amount > max.amount ? expense : max), this.expenses[0]);
     },
+    totalIncome() {
+      return this.incomes.reduce((total, income) => total + income.amount, 0);
+    },
+    totalExpense() {
+      return this.expenses.reduce((total, expense) => total + expense.amount, 0);
+    },
+    balance() {
+      return this.totalIncome - this.totalExpense;
+    }
   },
   created() {
     this.loadIncomes();
@@ -239,39 +255,20 @@ export default {
     updateChartData() {
       const incomeSources = [...new Set(this.incomes.map(income => income.source))];
       const incomeAmounts = incomeSources.map(source => {
-        return this.incomes
-          .filter(income => income.source === source)
-          .reduce((sum, income) => sum + income.amount, 0);
+        return this.incomes.filter(income => income.source === source).reduce((total, income) => total + income.amount, 0);
       });
-
       const expenseCategories = [...new Set(this.expenses.map(expense => expense.category))];
       const expenseAmounts = expenseCategories.map(category => {
-        return this.expenses
-          .filter(expense => expense.category === category)
-          .reduce((sum, expense) => sum + expense.amount, 0);
+        return this.expenses.filter(expense => expense.category === category).reduce((total, expense) => total + expense.amount, 0);
       });
 
-      this.incomeChartData = {
-        labels: incomeSources,
-        datasets: [
-          {
-            label: 'Доходы',
-            backgroundColor: this.colors.slice(0, incomeSources.length),
-            data: incomeAmounts,
-          },
-        ],
-      };
+      this.incomeChartData.labels = incomeSources;
+      this.incomeChartData.datasets[0].data = incomeAmounts;
+      this.incomeChartData.datasets[0].backgroundColor = incomeSources.map((_, index) => this.colors[index % this.colors.length]);
 
-      this.expenseChartData = {
-        labels: expenseCategories,
-        datasets: [
-          {
-            label: 'Расходы',
-            backgroundColor: this.colors.slice(0, expenseCategories.length),
-            data: expenseAmounts,
-          },
-        ],
-      };
+      this.expenseChartData.labels = expenseCategories;
+      this.expenseChartData.datasets[0].data = expenseAmounts;
+      this.expenseChartData.datasets[0].backgroundColor = expenseCategories.map((_, index) => this.colors[index % this.colors.length]);
     },
   },
 };
@@ -396,7 +393,20 @@ export default {
 }
 
 
+.balance {
+  width: 300px;
+  height: 400px;
+  background-color: #1C1E21;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 10px 36px 0px;
+  color: #77818E;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
 
 
