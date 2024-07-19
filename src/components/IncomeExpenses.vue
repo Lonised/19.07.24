@@ -627,5 +627,63 @@ export default {
 }
 
 
+
+@media screen and (min-width: 426px) and (max-width: 1024px) {
+  .wrapper-header {
+    width: 1024px;
+  }
+  .wrapper-main {
+    width: 1024px;
+    height: 100%;
+    font-size: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .line {
+    width: 200px;
+    height: 2px;
+    background-color: #77818E;
+  }
+  .income {
+    width: 200px;
+    height: 300px;
+  }
+  .income input {
+    width: 150px;
+  }
+  .expense {
+    width: 200px;
+    height: 300px;
+  }
+  .expense input {
+    width: 150px;
+  }
+  .expense select {
+    width: 150px;
+  }
+  .postmain-income {
+    width: 300px;
+    height: 300px;
+    padding: 0;
+    padding-bottom: 40px;
+  }
+  .postmain-expense {
+    width: 300px;
+    height: 300px;
+    padding: 0;
+    padding-bottom: 40px;
+  }
+
+}
+
+
+
+
+
+
 </style>
   
